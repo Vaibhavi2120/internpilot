@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InternPilot — Internship Application Tracker & Cover Letter Generator</title>
+  <meta name="description" content="A free, premium tool for students to generate internship cover letters, follow-up messages, and track applications. Built for Digital Heroes.">
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons for modern aesthetic -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Glassmorphic Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo">
+        <span class="logo-icon"><i class="fa-solid fa-paper-plane"></i></span>
+        <h1>InternPilot</h1>
+      </div>
+      <div class="badge-container">
+        <span class="version-badge">v1.0.0 Beta</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Application Wrapper -->
+  <main class="app-container">
+    
+    <!-- Hero / Intro Header -->
+    <section class="hero-section">
+      <h2 class="hero-title">Elevate Your Internship Search</h2>
+      <p class="hero-subtitle">Generate tailored cover letters, craft follow-up templates, and track your applications in one sleek dashboard.</p>
+    </section>
+
+    <div class="grid-layout">
+      
+      <!-- Left Column: Input Form -->
+      <section class="form-card card">
+        <div class="card-header">
+          <span class="card-icon"><i class="fa-solid fa-square-poll-horizontal"></i></span>
+          <h3>Application Details</h3>
+        </div>
+        <form id="application-form" class="app-form">
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="user-name">Full Name <span class="required">*</span></label>
+              <input type="text" id="user-name" placeholder="Alex Morgan" required>
+            </div>
+            <div class="form-group">
+              <label for="user-email">Email Address <span class="required">*</span></label>
+              <input type="email" id="user-email" placeholder="alex.morgan@example.com" required>
+            </div>
+          </div>
+
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="company-name">Company Name <span class="required">*</span></label>
+              <input type="text" id="company-name" placeholder="Google" required>
+            </div>
+            <div class="form-group">
+              <label for="intern-role">Internship Role <span class="required">*</span></label>
+              <input type="text" id="intern-role" placeholder="Software Engineering Intern" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="user-skills">Skills <span class="helper-text">(comma separated)</span></label>
+            <input type="text" id="user-skills" placeholder="React, Python, Git, UI/UX Design">
+          </div>
+
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="job-type">Job Type <span class="required">*</span></label>
+              <select id="job-type" required>
+                <option value="" disabled selected>Select Type</option>
+                <option value="Remote">Remote</option>
+                <option value="Hybrid">Hybrid</option>
+                <option value="On-site">On-site</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="job-stipend">Stipend <span class="helper-text">(e.g. $25/hr, Unpaid)</span></label>
+              <input type="text" id="job-stipend" placeholder="$3,000/mo or Unpaid">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="application-deadline">Application Deadline <span class="required">*</span></label>
+            <input type="date" id="application-deadline" required>
+          </div>
+
+          <div class="form-group">
+            <label for="user-intro">Short Intro / Hook <span class="helper-text">(A short sentence about you)</span></label>
+            <textarea id="user-intro" rows="3" placeholder="I'm a computer science junior passionate about building performant web applications and learning new technologies."></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" id="generate-btn" class="btn btn-primary">
+              <span class="btn-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span> Generate Materials
+            </button>
+            <button type="button" id="reset-btn" class="btn btn-secondary">
+              <span class="btn-icon"><i class="fa-solid fa-rotate-left"></i></span> Reset
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Right Column: Generated Output -->
+      <section class="output-card card">
+        <div class="card-header">
+          <span class="card-icon"><i class="fa-solid fa-sparkles"></i></span>
+          <h3>Generated Workspace</h3>
+          <div class="output-tabs">
+            <button type="button" class="tab-btn active" data-tab="tab-cl">Cover Letter</button>
+            <button type="button" class="tab-btn" data-tab="tab-fu">Follow-up</button>
+            <button type="button" class="tab-btn" data-tab="tab-check">Checklist & Priority</button>
+          </div>
+        </div>
+
+        <div class="card-content">
+          <!-- Cover Letter Tab -->
+          <div id="tab-cl" class="tab-panel active">
+            <div class="panel-header">
+              <h4>Customized Cover Letter</h4>
+              <div class="panel-actions">
+                <button type="button" id="copy-cl-btn" class="btn-action" title="Copy Cover Letter">
+                  <i class="fa-regular fa-copy"></i> Copy
+                </button>
+                <button type="button" id="download-cl-btn" class="btn-action" title="Download Text File">
+                  <i class="fa-solid fa-download"></i> Download
+                </button>
+              </div>
+            </div>
+            <div class="output-display-container">
+              <pre id="cover-letter-output" class="output-text" contenteditable="true">Fill in your Application Details on the left and click "Generate Materials" to view your customized cover letter.</pre>
+            </div>
+          </div>
+
+          <!-- Follow-up Message Tab -->
+          <div id="tab-fu" class="tab-panel">
+            <div class="panel-header">
+              <h4>Professional Follow-up Message</h4>
+              <div class="panel-actions">
+                <button type="button" id="copy-fu-btn" class="btn-action" title="Copy Follow-up Message">
+                  <i class="fa-regular fa-copy"></i> Copy
+                </button>
+                <button type="button" id="download-fu-btn" class="btn-action" title="Download Text File">
+                  <i class="fa-solid fa-download"></i> Download
+                </button>
+              </div>
+            </div>
+            <div class="output-display-container">
+              <pre id="follow-up-output" class="output-text" contenteditable="true">Follow-up message will appear here after generation. Use this to contact recruiters via LinkedIn or email.</pre>
+            </div>
+          </div>
+
+          <!-- Checklist & Priority Tab -->
+          <div id="tab-check" class="tab-panel">
+            <div class="score-checklist-wrapper">
+              <div class="score-box">
+                <span class="score-label">Application Priority Score</span>
+                <div id="priority-score" class="score-badge badge-neutral">Pending</div>
+                <p class="score-desc" id="priority-score-desc">Calculated automatically based on your application deadline.</p>
+              </div>
+              
+              <div class="checklist-box">
+                <h4>Application Checklist</h4>
+                <ul id="checklist-output" class="checklist-list">
+                  <li class="checklist-placeholder"><i class="fa-regular fa-circle-question"></i> Generate materials to create a custom checklist.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <button type="button" id="save-tracker-btn" class="btn btn-accent btn-full" disabled>
+            <span class="btn-icon"><i class="fa-solid fa-bookmark"></i></span> Add to Applications Tracker
+          </button>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Application Tracker Section -->
+    <section class="tracker-section">
+      <div class="tracker-header">
+        <div class="tracker-title-group">
+          <h2><i class="fa-solid fa-table-columns"></i> Applications Tracker</h2>
+          <p>Manage and follow up on your saved internship applications.</p>
+        </div>
+        <button type="button" id="clear-all-tracker-btn" class="btn btn-danger">
+          <i class="fa-solid fa-trash-can"></i> Clear All Applications
+        </button>
+      </div>
+
+      <!-- Tracker Cards Grid -->
+      <div id="tracker-grid" class="tracker-grid">
+        <!-- Empty state placeholder -->
+        <div class="tracker-empty-state" id="tracker-empty">
+          <div class="empty-icon"><i class="fa-solid fa-folder-open"></i></div>
+          <h3>No applications tracked yet</h3>
+          <p>Fill out the form, generate your customized cover letter, and click "Add to Applications Tracker" to start building your dashboard.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Premium Application Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>Built by Vaibhavi Pandey • <a href="mailto:vaibhavipandey2110@gmail.com" class="footer-link">vaibhavipandey2110@gmail.com</a></p>
+      </div>
+      <div class="footer-cta">
+        <a href="https://digitalheroesco.com" target="_blank" rel="noopener noreferrer" class="btn btn-hero">
+          Built for Digital Heroes
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification System -->
+  <div id="toast-notification" class="toast hidden">
+    <span class="toast-icon"><i class="fa-solid fa-circle-check"></i></span>
+    <span id="toast-message" class="toast-message">Copied to clipboard!</span>
+  </div>
+
+  <!-- Custom JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
